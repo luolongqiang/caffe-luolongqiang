@@ -1,0 +1,15 @@
+net: "models/style_vgg19_bn/train_val.prototxt"
+test_iter: 4000
+test_interval: 20000
+test_initialization: false
+display: 100
+base_lr: 0.00001
+lr_policy: "step"
+stepsize: 50000
+gamma: 0.95
+max_iter: 2000000
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 40000
+snapshot_prefix: "models/style_vgg19_bn/vgg19_bn_ft_out/"
+solver_mode: GPU

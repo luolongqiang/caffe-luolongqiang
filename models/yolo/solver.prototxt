@@ -1,0 +1,16 @@
+net: "models/yolo/train_val_small.prototxt"
+test_iter: 1000
+test_interval: 20000
+test_initialization: false
+display: 100
+average_loss: 100
+lr_policy: "step"
+base_lr: 0.0001
+stepsize: 30000
+gamma: 0.95
+max_iter: 1000000
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 20000
+snapshot_prefix: "models/yolo/yolo_ft_out/"
+solver_mode: GPU
