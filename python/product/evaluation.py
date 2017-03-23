@@ -2,7 +2,7 @@ import numpy as np
 from numpy import array
 from pandas import DataFrame
 import os, sys, time, argparse
-# python python/product/evaluation.py -r data/product/multi_task_test_label.txt -p models/multi_task_vgg16_bn/results/8w.txt -o 1
+# python python/product/evaluation.py -r data/product/multi_task_test_label.txt -p models/multi_task_vgg16_bn/results/20w.txt -isout 1
 
 ###############################################################################80
 
@@ -69,7 +69,7 @@ def get_args():
         help='real_labels.txt', default=None, type=str)
     parser.add_argument('-p', dest='pred_txt',
         help='pred_labels.txt', default=None, type=str)
-    parser.add_argument('-o', dest='is_out',
+    parser.add_argument('-isout', dest='is_out',
         help='output_dir of results', default=1, type=int)
     if len(sys.argv) == 1:
         parser.print_help()
