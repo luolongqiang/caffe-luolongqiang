@@ -74,3 +74,4 @@ python python/shoes/test.py -m models/shoes_vgg19_bn/deploy.prototxt -w models/s
 5. 评估
 python python/product/evaluation.py -r data/product/shoes_test_label.txt -p models/shoes_vgg19_bn/results/1w.txt -l models/shoes_vgg19_bn/results/1w.csv  -c 16 -n 10
 ****************************************************************************************************************************************
+caffemodels: https://pan.baidu.com/s/1eSGFFlK
