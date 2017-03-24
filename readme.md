@@ -1,4 +1,4 @@
-********************************************************* 基于yolo的目标检测 *******************************************************
+********************************************************* 基于yolo的目标检测 ***********************************
 1. 分割训练集和测试集: train.txt, test.txt 
 其中train.txt中每行存放的是图片路径, labels/目录下存放的是.txt文件， 每个.txt文件内容存放的是一张图片的label:(class, x, y, w, h)
 2. 训练： 
@@ -12,10 +12,10 @@
 python python/yolo/yolo_eval.py -t data/body_det/test.txt -p models/yolo/results/132w_pred_labels -o models/yolo/results/132w_bbox_imgs -e models/yolo/results/132w_evals -c 16
 5. 分析
 python python/yolo/output_error_cases.py -c models/yolo/results/132w_evals/body_eval_results.csv -i models/yolo/results/132w_bbox_imgs -o models/yolo/results/132w_evals/error_cases_iou_0.5 -t 0.5
-****************************************************************************************************************************************
+****************************************************************************************************************
 
 
-******************************************************** product: 多任务学习 *******************************************************
+******************************************************** product: 多任务学习 ************************************
 0. 转换格式：
 python python/product/json_to_txt.py -j data/product/product_list.json -t data/product/product_list.txt
 1. 统计分析：
@@ -34,10 +34,10 @@ scp luolongqiang@IP:服务器  本地
 python python/product/test.py -m models/multi_task_vgg16_bn/deploy_larger.prototxt -w models/multi_task_vgg16_bn/vgg16_bn_ft_out/_iter_20w.caffemodel -i data/product/multi_task_test_label.txt -o models/multi_task_vgg16_bn/results/20w.txt -c 16
 5. 评估
 python python/product/evaluation.py -r data/product/multi_task_test_label.txt -p models/multi_task_vgg16_bn/results/8w.txt -isout 1
-*************************************************************************************************************************************
+***************************************************************************************************************
 
 
-********************************************************* deepFashion: 多标签预测 ***************************************************
+********************************************************* deepFashion: 多标签预测 ******************************
 1. 分割数据集：train, val, test
 python python/deepFashion/get_style_multilabel.py -t data/deepFashion/Anno/list_attr_cloth.txt -m data/deepFashion/Anno/list_attr_img.txt -p data/deepFashion/Eval/list_eval_partition.txt -o data/deepFashion
 2. 统计分析：
@@ -54,10 +54,10 @@ scp luolongqiang@IP:服务器  本地
 python python/deepFashion/test_multilabel.py -m models/style_vgg19_bn/deploy.prototxt -w models/style_vgg19_bn/crop_vgg19_bn_ft_out/_iter_20000.caffemodel -i data/deepFashion/style_test_multilabel.txt -o models/style_vgg19_bn/results/2w.txt  -c 16 -t 0.0 -k 5 -mode test
 5. 评估
 python python/deepFashion/evaluation_multilabel.py -r data/deepFashion/style_test_multilabel.txt -p models/style_vgg19_bn/results/2w.txt -l models/style_vgg19_bn/results/2w.csv  -c 16 -t 0.0 -k 20
-****************************************************************************************************************************************
+***************************************************************************************************************
 
 
-********************************************************* product: shoes分类 *********************************************************
+********************************************************* product: shoes分类 **********************************
 2. 分割数据集：train, val, test
 python python/shoes/get_shoes_information.py -i data/shoes/img -o data/shoes/shoes_count.csv -p data/shoes
 3. 训练：
@@ -73,6 +73,6 @@ python python/shoes/test.py -m models/shoes_vgg19_bn/deploy.prototxt -w models/s
 python python/shoes/test.py -m models/shoes_vgg19_bn/deploy.prototxt -w models/shoes_vgg19_bn/vgg19_bn_ft_out/_iter_10000.caffemodel -i data/shoes/shoes_val_test_label.txt -c 16 -n 10
 5. 评估
 python python/product/evaluation.py -r data/product/shoes_test_label.txt -p models/shoes_vgg19_bn/results/1w.txt -l models/shoes_vgg19_bn/results/1w.csv  -c 16 -n 10
-****************************************************************************************************************************************
+*****************************************************************************************************************
 caffemodels: https://pan.baidu.com/s/1eSGFFlK
 Netscope: http://ethereon.github.io/netscope/#/editor
