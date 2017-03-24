@@ -76,3 +76,4 @@ python python/product/evaluation.py -r data/product/shoes_test_label.txt -p mode
 *****************************************************************************************************************
 caffemodels: https://pan.baidu.com/s/1eSGFFlK
 Netscope: http://ethereon.github.io/netscope/#/editor
+
