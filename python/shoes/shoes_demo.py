@@ -1,3 +1,4 @@
+# -*- coding:UTF-8 -*-
 import numpy as np
 from multiprocessing import Pool
 import os, sys, time, argparse, shutil
@@ -5,7 +6,7 @@ import caffe, cv2
 caffe.set_mode_cpu()
 
 # python python/shoes_demo/shoes_demo.py -mc models/shoes_demo/classify_deploy.prototxt -wc models/shoes_demo/shoes_classify.caffemodel -md models/shoes_demo/detection_deploy.prototxt -wd models/shoes_demo/shoes_detection.caffemodel -i data/shoes/362-test/JPEGImages1 -o data/shoes/362-test/JPEGImages1-test
-# python python/shoes_demo/shoes_demo.py -mc models/shoes_demo/classify_deploy.prototxt -wc models/shoes_demo/shoes_classify.caffemodel -md models/shoes_demo/detection_deploy.prototxt -wd models/shoes_demo/shoes_detection.caffemodel -i data/shoes/362-test/lady/7161ZD29988W -o data/shoes/362-test/lady/7161ZD29988W-test
+# python python/shoes_demo/shoes_demo.py -mc models/shoes_demo/classify_deploy.prototxt -wc models/shoes_demo/shoes_classify.caffemodel -md models/shoes_demo/detection_deploy.prototxt -wd models/shoes_demo/shoes_detection.caffemodel -i data/shoes/362-test/chirdren/ECZ7113013W -o data/shoes/362-test/chirdren/ECZ7113013W-test
 
 def shoes_demo(cls_model, cls_weight, det_model, det_weight, input_dir, output_root):
     if not os.path.exists(output_root):
@@ -28,7 +29,7 @@ def shoes_demo(cls_model, cls_weight, det_model, det_weight, input_dir, output_r
             if p_label in range(1, 11):
                 yolo_box, prob = make_detection(det_net, img)
                 img = cv2.imread(input_img_file) # BGR
-                canny_box = get_bbox_by_canny(img)
+                canny_box = get_bbox_by_mask(img)
                 output_final_box(canny_box, yolo_box, img, p_label, prob, output_img_file)
             else:
                 shutil.copy(input_img_file, output_img_file)
@@ -58,18 +59,45 @@ def make_detection(net, img):
     yolo_box = [top, right, bottom, left]
     return yolo_box, prob
 
-def get_bbox_by_canny(img):
-    grayed = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    grayed = cv2.GaussianBlur(grayed, (5, 5), sigmaX=3, sigmaY=3)
-    #grayed = cv2.blur(grayed, (3, 3))
-    width = grayed.shape[1]
-    height = grayed.shape[0]
-    canny_img = cv2.Canny(grayed, 30, 90)
+def get_bbox_by_mask(img):
+    # resize img to fit_img
+    raw_w, raw_h = img.shape[1], img.shape[0]
+    size = 300
+    if raw_w >= raw_h:
+        fit_w = int(float(size)*raw_w/raw_h)   
+        fit_h = size
+    else:
+        fit_h = int(float(size)*raw_h/raw_w) 
+        fit_w = size  
+    fit_img = cv2.resize(img, (fit_w, fit_h), interpolation = cv2.INTER_LINEAR)
 
+    # get fit_bbox
+    top, right, bottom, left = get_bbox(fit_img, fit_w, fit_h)
+    
+    # resize fit_bbox to bbox
+    top = int(float(top)*raw_h/fit_h)
+    right = int(float(right)*raw_w/fit_w)
+    bottom = int(float(bottom)*raw_h/fit_h)
+    left = int(float(left)*raw_w/fit_w)
+
+    canny_box = [top, right, bottom, left]
+
+    return canny_box
+    
+def get_bbox(fit_img, fit_w, fit_h):
+    # canny for bbox
+    grayed = cv2.cvtColor(fit_img, cv2.COLOR_BGR2GRAY)
+    grayed = cv2.GaussianBlur(grayed, (5, 5), 0)
+    pix = np.mean([grayed[0, 0], grayed[0, fit_w/2], grayed[0, fit_w-1], \
+        grayed[fit_h/2, 0], grayed[fit_h/2, fit_w-1], \
+        grayed[fit_h-1, 0], grayed[fit_h-1, fit_w/2], grayed[fit_h-1, fit_w-1]])
+    pix = 255 - int(pix)
+    # 这个阈值告诉算法“什么程度的边界才算边缘”，阈值越大表示标准越严厉，提取到的边缘越少
+    canny_img = cv2.Canny(grayed, pix + 5, pix + 35) 
     if np.max(canny_img) == 0:
         top    = 0
-        right  = width - 1
-        bottom = height - 1
+        right  = fit_w - 1
+        bottom = fit_h - 1
         left   = 0
     else:
         linepix = np.where(canny_img == 255)
@@ -77,12 +105,41 @@ def get_bbox_by_canny(img):
         right  = max(linepix[1])
         bottom = max(linepix[0])
         left   = min(linepix[1])
-    canny_box = [top, right, bottom, left]
 
-    return canny_box
+    # grabcut for mask
+    mask = np.zeros((fit_h, fit_w), np.uint8)
+    bgdModel = np.zeros((1, 65), np.float64)
+    fgdModel = np.zeros((1, 65), np.float64)
+    rect = (left, top, right - left, bottom - top) 
+    cv2.grabCut(fit_img, mask, rect, bgdModel, fgdModel, 3, cv2.GC_INIT_WITH_RECT)
+    mask2 = np.where((mask==0)|(mask==2), 0, 1).astype('uint8')
+    
+    # get binary img with mask
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+    th3 = cv2.dilate(canny_img, kernel)
+    bin_img = cv2.bitwise_and(th3, th3, mask = mask2)
+    
+    # findContours for final bbox
+    contours, dummy = cv2.findContours(bin_img.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE) 
+    contours = sorted(contours, key = cv2.contourArea, reverse = True)
+    if len(contours) > 0:
+        box0 = cv2.boundingRect(contours[0])
+        left = box0[0]
+        top = box0[1]
+        right = box0[0] + box0[2]
+        bottom = box0[1] + box0[3]
+        if len(contours) > 1:
+            box1 = cv2.boundingRect(contours[1])
+            if (box1[2]*box1[3]*1.0)/(box0[2]*box0[3]) >= 0.4:
+                left = min(box0[0], box1[0])
+                top = min(box0[1], box1[1])
+                right = max(box0[0]+box0[2], box1[0]+box1[2])
+                bottom = max(box0[1]+box0[3], box1[1]+box1[3])
+
+    return top, right, bottom, left
 
 def output_final_box(box1, box2, img, p_label, prob, output_img_file):
-    # get iou value of two boxes
+    # get iou value of two boxes (top, right, bottom, left)
     tb = min(box1[2], box2[2]) - min(box1[0], box2[0])
     lr = min(box1[1], box2[1]) - max(box1[3], box2[3])
     if tb < 0 or lr < 0:
@@ -98,7 +155,7 @@ def output_final_box(box1, box2, img, p_label, prob, output_img_file):
        iou_value = intersection*1.0 / union
 
     # determine final box
-    if iou_value > 0.85:
+    if iou_value >= 0.85:
         top, right, bottom, left = tuple(box1)
         fg = 'canny'
     else:
