@@ -1,3 +1,18 @@
+**********************************************对yolo的理解***************************************
+1. 输出层节点个数为什么不是S*S*[5B+(C+1)],而是S*S*（5B+C）？
+因为confidence已经体现了是某一类的置信度，置信度较低的情况下，可以认为就是backgroud
+2. bbox1与bbox2不一样的环节体现在哪里？
+全连接到bbox1与bbox2的初始化权重不一样
+3. 损失函数中：lamda(coord)=5，而lamda(noobj)=0.5, 这相当于加重对ground_truth的识别，
+而减弱对background的识别，但是文中又指出yolo比fast-rcnn具有更小的background error, 这是不是矛盾？
+为什么减弱对background的识别？
+尽管lamda(noobj)设的比lamda(coord)小，减弱了对background的识别，
+但是yolo的background error仍然低于fast-rcnn. 另外，这样的设置，不是想减弱对background的识别，
+而是因为大部分图片中background比较多，导致S*S的网格中很多cell是background. 设置一样的lamda, 
+会使得训练出来的网络容易把ground_truth识别为background。为此，想要加强对ground_truth的识别，
+就必须设置较大的lamda。
+************************************************************************************************
+
 ********************************************************* 基于yolo的目标检测 ***********************************
 1. 分割训练集和测试集: train.txt, test.txt 
 其中train.txt中每行存放的是图片路径, labels/目录下存放的是.txt文件， 每个.txt文件内容存放的是一张图片的label:(class, x, y, w, h)
