@@ -76,4 +76,4 @@ python python/product/evaluation.py -r data/product/shoes_test_label.txt -p mode
 *****************************************************************************************************************
 caffemodels: https://pan.baidu.com/s/1eSGFFlK
 Netscope: http://ethereon.github.io/netscope/#/editor
-深入理解CNN(超级认真的干货) :http://simtalk.cn/2016/09/12/CNNs/
+深入理解CNN(超级认真的干货) :http://simtalk.cn/2016/09/12/CNNs/  或者 http://cs231n.github.io/convolutional-networks/
