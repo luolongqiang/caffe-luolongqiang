@@ -93,3 +93,4 @@ caffemodels: https://pan.baidu.com/s/1eSGFFlK
 Netscope: http://ethereon.github.io/netscope/#/editor
 深入理解CNN(超级认真的干货) :http://simtalk.cn/2016/09/12/CNNs/  或者 http://cs231n.github.io/convolutional-networks/
 网络结构汇总：http://noahsnail.com/2017/06/01/2017-6-1-Caffe%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E6%80%BB%E7%BB%93/
+jsoncpp安装：http://blog.csdn.net/Tanswer_/article/details/73104931
