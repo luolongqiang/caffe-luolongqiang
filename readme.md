@@ -95,3 +95,4 @@ Netscope: http://ethereon.github.io/netscope/#/editor
 网络结构汇总：http://noahsnail.com/2017/06/01/2017-6-1-Caffe%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E6%80%BB%E7%BB%93/
 jsoncpp安装：http://blog.csdn.net/Tanswer_/article/details/73104931
 make pycaffe的坑：http://nfeng.cc/2016/03/28/caffe-python-gtk-error/
+py-faster-rcnn更新至cudnn-v5：http://www.linuxidc.com/Linux/2017-10/147610.htm
