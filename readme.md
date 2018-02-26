@@ -96,3 +96,4 @@ Netscope: http://ethereon.github.io/netscope/#/editor
 jsoncpp安装：http://blog.csdn.net/Tanswer_/article/details/73104931
 make pycaffe的坑：http://nfeng.cc/2016/03/28/caffe-python-gtk-error/
 py-faster-rcnn更新至cudnn-v5：http://www.linuxidc.com/Linux/2017-10/147610.htm
+百度自动驾驶项目：http://apollo.auto/
