@@ -98,3 +98,4 @@ make pycaffe的坑：http://nfeng.cc/2016/03/28/caffe-python-gtk-error/
 py-faster-rcnn更新至cudnn-v5：http://www.linuxidc.com/Linux/2017-10/147610.htm
 百度自动驾驶项目：http://apollo.auto/
 SSD细节详解：http://www.360doc.com/content/17/0810/10/10408243_678091430.shtml
+SSD和FPN详解：http://hellodfan.com/2017/10/14/%E7%89%A9%E4%BD%93%E6%A3%80%E6%B5%8B%E8%AE%BA%E6%96%87-SSD%E5%92%8CFPN/
