@@ -97,3 +97,4 @@ jsoncpp安装：http://blog.csdn.net/Tanswer_/article/details/73104931
 make pycaffe的坑：http://nfeng.cc/2016/03/28/caffe-python-gtk-error/
 py-faster-rcnn更新至cudnn-v5：http://www.linuxidc.com/Linux/2017-10/147610.htm
 百度自动驾驶项目：http://apollo.auto/
+SSD细节详解：http://www.360doc.com/content/17/0810/10/10408243_678091430.shtml
