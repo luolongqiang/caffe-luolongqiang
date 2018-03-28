@@ -50,7 +50,6 @@ def GetBoxRange(input_txt):
 	    z = int(float(obj[1])) + int(float(obj[3]))
 	    w = int(float(obj[2])) + int(float(obj[4]))
 	    labels.append([x,y,z,w])
-    fi.close()
     labels = array(labels)  
     return [min(labels[:,0]), min(labels[:,1]), max(labels[:,2]), max(labels[:,3])]
 
@@ -123,7 +122,6 @@ def GetLimitedLabels(input_txt, categories, box_range, isbox = 1, level = 2, jus
                         labels.append([name, x, y, z, w])
                 else:       
             	    labels.append([name, x, y, z, w])
-    fi.close()
     return labels
     
 def GetPerClassInformation(r_labels, p_labels, class_dict):
