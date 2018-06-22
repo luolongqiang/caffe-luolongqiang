@@ -290,7 +290,6 @@ def get_merged_prototxt(net, src_prototxt, dst_prototxt, remained_layer_dict):
     with open(dst_prototxt, 'w') as fo:
         fo.writelines(fo_list)
 
-
 def main():
     args = parse_args()
     src_model         = args.src_model
