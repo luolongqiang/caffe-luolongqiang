@@ -28,7 +28,7 @@ void maJiang4(std::string src, bool& mark, std::set<char>& res){
 		}
 		mark = false;
 	}
-	else if(src[0] == src[1] and src[2] + 1 == src[3]){   // AABC
+	else if(src[0] == src[1] and src[2] + 1 == src[3]){ // AABC
 		res.insert(src[2]-1);
 		if(src[3]+1 <= '9'){
 			res.insert(src[3]+1);
@@ -42,6 +42,24 @@ void maJiang4(std::string src, bool& mark, std::set<char>& res){
 		}
 		mark = false;
 	}
+	else if(src[0] == src[1] && src[2]+2 == src[3]){ // AABD
+		res.insert(src[2]+1);
+		mark = false;
+	}	
+	else if(src[0]+2 == src[1] && src[2] == src[3]){ // ACDD
+		res.insert(src[0]+1);
+		mark = false;
+	}
+	else if(src[1]+1 == src[2]) { // ABCD
+		if(src[0]+1 == src[1]){
+			res.insert(src[3]);
+			mark = false;
+		}
+		if(src[2]+1 == src[3]){
+			res.insert(src[0]);
+			mark = false;
+		}
+	}
 }
 
 void maJiangQingYiSe(std::string src, bool& mark, std::set<char>& res){
@@ -53,7 +71,6 @@ void maJiangQingYiSe(std::string src, bool& mark, std::set<char>& res){
 	}
 	if(num == 4){
 		maJiang4(src, mark, res);
-		mark = false;
 		return;
 	}
 	for(int i = 0; i < num - 2; ++i){
@@ -67,7 +84,7 @@ void maJiangQingYiSe(std::string src, bool& mark, std::set<char>& res){
 }
 
 int main(){
-	std::string src = "1112345678";
+	std::string src = "1123445668";
 	if(src.size() >= 4){
 		for(int i = 0; i < src.size() - 3; ++i){
 			if(src[i]   == src[i+1] &&
@@ -90,6 +107,5 @@ int main(){
 			std::cout<<*it<<" ";
 		}		
 	}
-
 	return 0;
 }
