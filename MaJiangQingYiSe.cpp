@@ -174,7 +174,7 @@ char stackOut14[] = {'b', 'd', 'c', 'a'};
 #include <iostream>
 #include <map>
 
-int FindMaxLenSeries(int a[], int num){
+int LongestConsecutiveSequence(int a[], int num){
 	std::map<int, bool> mark;
 	for(int i = 0; i < num; ++i){
 		mark.insert(std::pair<int, bool>(a[i], true));
@@ -205,7 +205,7 @@ int FindMaxLenSeries(int a[], int num){
 int main(){
 	int num = 8;
 	int a[] = {100, 4, 200, 1, 3, 2, 5, 6};
-	std::cout<<FindMaxLenSeries(a, num)<<std::endl;
+	std::cout<<LongestConsecutiveSequence(a, num)<<std::endl;
 	return 0;
 }
 
