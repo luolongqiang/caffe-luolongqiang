@@ -109,3 +109,63 @@ int main(){
 	}
 	return 0;
 }
+
+//##################################################################################
+
+//##################################################################################
+#include <iostream>
+#include <stack>
+#include <vector>
+#include <string>
+
+bool isRightOutputOfStack(std::string src, std::string target){
+	int num = src.size();
+	if(num == 0){
+		return true;	
+	}
+	if(num == 1){
+	 	if(src[0] == target[0])
+			return true;
+		else
+			return false;
+	}
+	int index = target.find(src[0]);
+	std::string src1 = src.substr(1, index);
+	std::string src2 = src.substr(index+1);
+	std::string target1 = target.substr(0, index);
+	std::string target2 = target.substr(index+1);
+	bool mark1 = isRightOutputOfStack(src1, target1);
+	bool mark2 = isRightOutputOfStack(src2, target2);
+	return mark1&&mark2;
+}
+
+int main(){
+	std::string src = "abcd";
+	std::string target = "adbc";
+	bool mark = isRightOutputOfStack(src, target); 
+	if(mark)
+		std::cout<<"true"<<std::endl;
+	else
+		std::cout<<"false"<<std::endl;
+	return 0;	
+}
+
+/*
+char stackIn[]    = {'a', 'b', 'c', 'd'};
+char stackOut1[]  = {'a', 'd', 'c', 'b'};
+char stackOut2[]  = {'a', 'c', 'd', 'b'};
+char stackOut3[]  = {'a', 'c', 'b', 'd'};
+char stackOut4[]  = {'a', 'b', 'c', 'd'};
+char stackOut5[]  = {'a', 'b', 'd', 'c'};
+char stackOut6[]  = {'b', 'a', 'c', 'd'};
+char stackOut7[]  = {'b', 'a', 'd', 'c'};
+char stackOut8[]  = {'c', 'b', 'a', 'd'};
+char stackOut9[]  = {'b', 'c', 'a', 'd'};
+char stackOut10[] = {'d', 'c', 'b', 'a'};
+char stackOut11[] = {'c', 'd', 'b', 'a'};
+char stackOut12[] = {'c', 'b', 'd', 'a'};
+char stackOut13[] = {'b', 'c', 'd', 'a'};
+char stackOut14[] = {'b', 'd', 'c', 'a'};
+*/
+
+
