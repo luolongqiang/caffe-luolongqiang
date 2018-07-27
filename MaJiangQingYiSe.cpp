@@ -111,8 +111,8 @@ int main(){
 }
 
 //##################################################################################
-
 //##################################################################################
+
 #include <iostream>
 #include <stack>
 #include <vector>
@@ -168,3 +168,46 @@ char stackOut13[] = {'b', 'c', 'd', 'a'};
 char stackOut14[] = {'b', 'd', 'c', 'a'};
 */
 
+//##################################################################################
+//##################################################################################
+
+#include <iostream>
+#include <map>
+
+int FindMaxLenSeries(int a[], int num){
+	std::map<int, bool> mark;
+	for(int i = 0; i < num; ++i){
+		mark.insert(std::pair<int, bool>(a[i], true));
+	}	
+	int max = 1, temp1, temp2, count;
+	for(int i = 0; i < num; ++i){
+		count = 1;
+		temp1 = temp2 = a[i];
+		while(mark[temp1] || mark[temp2]){
+			mark[temp1] = false;
+			mark[temp2] = false;
+			if(mark[temp1-1]){
+				--temp1;
+				++count; 
+			}
+			if(mark[temp2+1]){
+				++temp2;
+				++count;
+			}			
+		}
+		if(count > max){
+			max = count;
+		}
+	}
+	return max;
+}
+
+int main(){
+	int num = 8;
+	int a[] = {100, 4, 200, 1, 3, 2, 5, 6};
+	std::cout<<FindMaxLenSeries(a, num)<<std::endl;
+	return 0;
+}
+
+//##################################################################################
+//##################################################################################
